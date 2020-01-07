@@ -17,16 +17,31 @@
 #define CLR(x,y) (x &= (~(1<<y)))       		// |
 #define CHK(x,y) (x & (1<<y))           		// |
 #define TOG(x,y) (x^=(1<<y))            		//-+
-
-
-
 #define N 160  //How many frequencies
 
-char registerNum = -1;
 int sizeOfArray = N;
 float results[N];            //-Filtered result buffer
 float freq[N];            //-Filtered result buffer
 
+float gesturePoint[4][2];
+float gestureDist[4];
+
+
+int maxofI(const float a[], int n){
+  float max = 0.0;
+  int maxI = 0;
+  for(int i=0; i<n; i++){
+    if( a[i] > max ){
+      max = a[i];
+      maxI = i;
+    }
+  }
+  return maxI;
+}
+
+double dist(float x1, float y1, float x2, float y2){
+  return sqrt( pow( x2 - x1, 2.0) + pow( y2 - y1, 2.0) );
+}
 
 void setup(){
   TCCR1A=0b10000010;        //-Set up frequency generator
@@ -47,6 +62,7 @@ void setup(){
   }
 }
 
+
 void loop(){ 
   for(unsigned int d=0; d<N; d++){
     int v = analogRead(A0);    //-Read response signal
@@ -61,10 +77,31 @@ void loop(){
   }
   TOG(PORTB, 0);            //-Toggle pin 8 after each sweep (good for scope)
 
+  float totalDist = 0;
+  int currentMax = 0;
+  float currentMaxValue = -1;
   for(uint8_t i=0; i<4; i++){
+    
     if(!digitalRead(3+i)){
-      
+      gesturePoint[i][0] = freq[maxofI(freq, sizeof(freq))];
+      gesturePoint[i][1] = results[maxofI(results, sizeof(results))];
+    }
+    gestureDist[i] = dist(freq[maxofI(freq, sizeof(freq))], results[maxofI(results, sizeof(results))], gesturePoint[i][0], gesturePoint[i][1]);
+    totalDist += gestureDist[i];
+    if((gestureDist[i] < currentMaxValue) || (i==0)){
+      currentMax = i;
+      currentMaxValue = gestureDist[i];
     }
   }
+  totalDist /= 3.0;
+  /*
+  for(int i=0; i<4; i++){
+    float currentAmount = 1 - gestureDist[i] / totalDist;
+    if(currentMax == i){
+      
+    }
+    else{
 
+    }
+  }*/
 }
