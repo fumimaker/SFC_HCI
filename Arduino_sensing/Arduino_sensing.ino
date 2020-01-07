@@ -27,7 +27,7 @@ float gesturePoint[4][2];
 float gestureDist[4];
 
 
-int maxofI(const float a[], int n){
+int maxofI(const float *a, int n){
   float max = 0.0;
   int maxI = 0;
   for(int i=0; i<n; i++){
@@ -86,12 +86,14 @@ void loop(){
   TOG(PORTB, 0);            //-Toggle pin 8 after each sweep (good for scope)
 
 
+
   float totalDist = 0;
   int currentMax = 0;
   float currentMaxValue = -1;
 
   for(uint8_t i=0; i<4; i++){
     if(!digitalRead(3+i)){
+      Serial.println(freq[120]);
       gesturePoint[i][0] = freq[maxofI(freq, sizeof(freq))];
       gesturePoint[i][1] = results[maxofI(results, sizeof(results))];
     }
