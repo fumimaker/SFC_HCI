@@ -60,6 +60,14 @@ void setup(){
   for(int i=0;i<N;i++){      //-Preset results
     results[i]=0;           //-+
   }
+  for(int i=0; i<4; i++){
+    gestureDist[i] = 0;
+  }
+  for(int i=0; i<4; i++){
+    for(int j=0; j<2; j++){
+      gesturePoint[i][j] = 0;
+    }
+  }
 }
 
 
@@ -77,16 +85,18 @@ void loop(){
   }
   TOG(PORTB, 0);            //-Toggle pin 8 after each sweep (good for scope)
 
+
   float totalDist = 0;
   int currentMax = 0;
   float currentMaxValue = -1;
+
   for(uint8_t i=0; i<4; i++){
-    
     if(!digitalRead(3+i)){
       gesturePoint[i][0] = freq[maxofI(freq, sizeof(freq))];
       gesturePoint[i][1] = results[maxofI(results, sizeof(results))];
     }
     gestureDist[i] = dist(freq[maxofI(freq, sizeof(freq))], results[maxofI(results, sizeof(results))], gesturePoint[i][0], gesturePoint[i][1]);
+    
     totalDist += gestureDist[i];
     if((gestureDist[i] < currentMaxValue) || (i==0)){
       currentMax = i;
@@ -94,14 +104,12 @@ void loop(){
     }
   }
   totalDist /= 3.0;
-  /*
+
+
   for(int i=0; i<4; i++){
     float currentAmount = 1 - gestureDist[i] / totalDist;
     if(currentMax == i){
       
     }
-    else{
-
-    }
-  }*/
+  }
 }

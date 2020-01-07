@@ -1,5 +1,7 @@
 {
-    "board": "arduino:avr:uno",
+    "board": "arduino:avr:pro",
     "programmer": "AVR ISP",
-    "sketch": "Arduino_sensing.ino"
+    "sketch": "Arduino_sensing.ino",
+    "port": "/dev/cu.usbserial-1420",
+    "configuration": "cpu=16MHzatmega328"
 }
