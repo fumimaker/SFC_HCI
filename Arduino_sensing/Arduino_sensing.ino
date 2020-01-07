@@ -27,16 +27,16 @@ float gesturePoint[4][2];
 float gestureDist[4];
 
 
-int maxofI(const float *a, int n){
-  float max = 0.0;
-  int maxI = 0;
+int maxofI(float *a, int n){
+  float max = 0;
+  int index = 0;
   for(int i=0; i<n; i++){
-    if( a[i] > max ){
+    if( max < a[i] ){
       max = a[i];
-      maxI = i;
+      index = i;
     }
   }
-  return maxI;
+  return index;
 }
 
 double dist(float x1, float y1, float x2, float y2){
@@ -93,9 +93,9 @@ void loop(){
 
   for(uint8_t i=0; i<4; i++){
     if(!digitalRead(3+i)){
-      Serial.println(freq[120]);
-      gesturePoint[i][0] = freq[maxofI(freq, sizeof(freq))];
-      gesturePoint[i][1] = results[maxofI(results, sizeof(results))];
+      gesturePoint[i][0] = freq[maxofI(freq, N)];
+      gesturePoint[i][1] = results[maxofI(results, N)];
+      Serial.println(freq[maxofI(freq, N)];
     }
     gestureDist[i] = dist(freq[maxofI(freq, sizeof(freq))], results[maxofI(results, sizeof(results))], gesturePoint[i][0], gesturePoint[i][1]);
     
