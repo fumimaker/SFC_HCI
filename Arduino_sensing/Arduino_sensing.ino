@@ -1,12 +1,3 @@
-   
-
-   
-   //****************************************************************************************
-// Illutron take on Disney style capacitive touch sensor using only passives and Arduino
-// Dzl 2012
-//****************************************************************************************
-
-
 //                              10n
 // PIN 9 --[10k]-+-----10mH---+--||-- OBJECT
 //               |            |
@@ -31,10 +22,10 @@
 
 #define N 160  //How many frequencies
 
+
+int sizeOfArray = N;
 float results[N];            //-Filtered result buffer
 float freq[N];            //-Filtered result buffer
-int sizeOfArray = N;
-
  
    
    
@@ -74,20 +65,11 @@ void loop()
     results[d]=results[d]*0.5+(float)(v)*0.5; //Filter results
    
     freq[d] = d;
-
- //   plot(v,0);              //-Display
- //   plot(results[d],1);
-  // delayMicroseconds(1);
   }
 
 
-PlottArray(1,freq,results);
- 
+  PlottArray(1,freq,results);
+
 
   TOG(PORTB,0);            //-Toggle pin 8 after each sweep (good for scope)
 }
-   
-
-   
-    
- 
