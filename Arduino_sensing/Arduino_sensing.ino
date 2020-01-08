@@ -114,7 +114,7 @@ void loop(){
     if(currentMax == i){
       char buf[32];
       char s [20];
-      sprintf(buf, "%d, %s", currentMax, dtostrf(currentAmount, 5, 2, s));
+      sprintf(buf, "%d, %s %", currentMax, dtostrf(currentAmount*100, 5, 2, s));
       Serial.println(buf);
     }
   }
