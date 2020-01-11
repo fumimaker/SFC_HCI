@@ -58,6 +58,14 @@ void setup(){
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
+  pinMode(15, OUTPUT);
+  pinMode(16, OUTPUT);
+  pinMode(17, OUTPUT);
+  pinMode(18, OUTPUT);
+  for(int i=0; i<4; i++){
+    digitalWrite(15 + i, LOW);
+  }
+
   Serial.begin(115200);
 
   for(int i=0;i<N;i++){      //-Preset results
@@ -120,6 +128,8 @@ void loop(){
   */
  currentAmount = 1.0 - gestureDist[currentMax] / totalDist;
   if(currentMax != _oldcurrentMaxI){
+    digitalWrite(_oldcurrentMaxI+15, LOW);
+    digitalWrite(currentMax+15, HIGH);
     char buf[32];
     char s[32];
     sprintf(buf, "%d, %s %", currentMax, dtostrf(currentAmount * 100, 5, 2, s));
