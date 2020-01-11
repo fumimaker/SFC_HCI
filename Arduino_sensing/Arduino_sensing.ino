@@ -26,6 +26,9 @@ float freq[N];            //-Filtered result buffer
 float gesturePoint[4][2];
 float gestureDist[4];
 
+char* names[] = {"Sitting", "Standing", "Lying", "Nothing"};
+
+int _oldcurrentMaxI=0;
 
 int maxofI(float *a, int n){
   float max = 0;
@@ -58,14 +61,14 @@ void setup(){
   Serial.begin(115200);
 
   for(int i=0;i<N;i++){      //-Preset results
-    results[i]=0;           //-+
+    results[i]=0.0;           //-+
   }
   for(int i=0; i<4; i++){
-    gestureDist[i] = 0;
+    gestureDist[i] = 0.0;
   }
   for(int i=0; i<4; i++){
     for(int j=0; j<2; j++){
-      gesturePoint[i][j] = 0;
+      gesturePoint[i][j] = 0.0;
     }
   }
 }
@@ -95,7 +98,9 @@ void loop(){
     if(!digitalRead(3+i)){
       gesturePoint[i][0] = freq[maxofI(freq, N)];
       gesturePoint[i][1] = results[maxofI(results, N)];
-      Serial.println("Registered.");
+      char buf[32];
+      sprintf(buf, "No%d button pressed. %s Registered", i, names[i]);
+      Serial.println(buf);
     }
     gestureDist[i] = dist(freq[maxofI(freq, N)], results[maxofI(results, N)], gesturePoint[i][0], gesturePoint[i][1]);
     
@@ -107,15 +112,19 @@ void loop(){
   }
   totalDist /= 3.0;
 
-
+  float currentAmount = 0.0;
+  /*
   for(int i=0; i<4; i++){
-    float currentAmount = 1.0 - gestureDist[i] / totalDist;
-    //Serial.println(currentAmount);
-    if(currentMax == i){
-      char buf[32];
-      char s [20];
-      sprintf(buf, "%d, %s %", currentMax, dtostrf(currentAmount*100, 5, 2, s));
-      Serial.println(buf);
-    }
+    currentAmount = 1.0 - gestureDist[i] / totalDist;
   }
+  */
+ currentAmount = 1.0 - gestureDist[currentMax] / totalDist;
+  if(currentMax != _oldcurrentMaxI){
+    char buf[32];
+    char s[32];
+    sprintf(buf, "%d, %s %", currentMax, dtostrf(currentAmount * 100, 5, 2, s));
+    Serial.println(buf);
+    _oldcurrentMaxI = currentMax;
+  }
+
 }
