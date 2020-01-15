@@ -28,7 +28,7 @@ Apple Watchは人間が長時間座っていることを検知し，1時間に�
 [^nagai]: 日本人は世界一「座りすぎ」？　糖尿病や認知症のリスク…仕事見直す企業も - 産経ニュース: https://www.sankei.com/life/news/190627/lif1906270023-n1.html
 [^watch]: Apple Watch https://www.apple.com/jp/watch/
 
-# アプローチ
+# アプローチ(Research Question)
 
 [@fig:teian]衣服に導電糸[^ito]を縫い付け，Touche[^touche]を用いて接触をセンシングすることで人間の状態を検知する．衣服をセンサーとすることで人間の体に違和感なくロギングをすることができると考える．
 
